@@ -1,20 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout('layouts/boilerplate') %>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Show</title>
-</head>
-
-<body>
-    <h1>
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card mb-3">
+                <img src="<%= shop.image%>" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= shop.title%>
+                    </h5>
+                    <p class="card-text">
+                        <%= shop.description%>
+                    </p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item text-secondary">
+                        <%= shop.location%>
+                    </li>
+                    <li class="list-group-item">$<%= shop.price%> Avg. (Regular Size, No Toppings)</li>
+                </ul>
+                <div class="card-body">
+                    <a class="card-link btn btn-info" href="/shops/<%=shop._id%>/edit">Edit</a>
+                    <form class="d-inline" action="/shops/<%=shop._id%>?_method=DELETE" method="POST">
+                        <button class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+                <div class="card-footer text-muted">
+                    2 days ago
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- <h1>
         <%= shop.title %>
     </h1>
     <h2>
         <%= shop.location %>
     </h2>
+    <img src="<%= shop.image %> " alt="">
+    <p>
+        <%= shop.description %>
+    </p>
     <p>
         <a href="/shops/<%=shop._id %>/edit">Edit</a>
     </p>
@@ -23,7 +48,4 @@
     </p>
     <footer>
         <a href="/shops">All Shops</a>
-    </footer>
-</body>
-
-</html>
+    </footer> -->

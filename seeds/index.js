@@ -20,9 +20,13 @@ const seedDB = async () => {
 
     for (let i = 0; i < 50; i++) {
         const random1000 = Math.floor(Math.random() * 1000);
+        const price = Math.floor(Math.random() * 9) + 1;
         const shop = new Shop({
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
-            title: `${sample(descriptors)} ${sample(nouns)}`
+            title: `${sample(descriptors)} ${sample(nouns)}`,
+            image: 'https://source.unsplash.com/collection/v6GwutAZ0EI',
+            description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse rem nobis, recusandae voluptatem beatae cumque tempore illum accusantium odit velit ea ipsa asperiores, officiis adipisci corporis? Itaque sed facere voluptate?',
+            price
         });
         await shop.save();
     }
