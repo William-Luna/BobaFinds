@@ -22,6 +22,7 @@ const seedDB = async () => {
         const random1000 = Math.floor(Math.random() * 1000);
         const price = Math.floor(Math.random() * 9) + 1;
         const shop = new Shop({
+            author: '62db9ac73d738b13a915e1cd',
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(nouns)}`,
             image: 'https://source.unsplash.com/collection/v6GwutAZ0EI',
