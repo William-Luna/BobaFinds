@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const catchAsync = require('../utils/catchAsync');
 const { shopSchema } = require('../schemas.js');
+const { isLoggedIn } = require('../middleware');
 
 const ExpressError = require('../utils/ExpressError');
 const Shop = require('../models/shop');
@@ -21,12 +22,12 @@ router.get('/', catchAsync(async (req, res) => {
     res.render('shops/index', { shops })
 }));
 
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.render('shops/new');
 })
 
 
-router.post('/', validateShop, catchAsync(async (req, res, next) => {
+router.post('/', isLoggedIn, validateShop, catchAsync(async (req, res, next) => {
     // if (!req.body.shop) throw new ExpressError('Invalid Shop Data', 400);
     const shop = new Shop(req.body.shop);
     await shop.save();
@@ -43,7 +44,7 @@ router.get('/:id', catchAsync(async (req, res,) => {
     res.render('shops/show', { shop });
 }));
 
-router.get('/:id/edit', catchAsync(async (req, res) => {
+router.get('/:id/edit', isLoggedIn, catchAsync(async (req, res) => {
     const shop = await Shop.findById(req.params.id)
     if (!shop) {
         req.flash('error', 'Cannot find that shop!');
@@ -52,14 +53,14 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
     res.render('shops/edit', { shop });
 }))
 
-router.put('/:id', validateShop, catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, validateShop, catchAsync(async (req, res) => {
     const { id } = req.params;
     const shop = await Shop.findByIdAndUpdate(id, { ...req.body.shop });
     req.flash('success', 'Successfully updated shop!');
     res.redirect(`/shops/${shop._id}`)
 }));
 
-router.delete('/:id', catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
     const { id } = req.params;
     await Shop.findByIdAndDelete(id);
     req.flash('success', 'Successfully deleted shop')
