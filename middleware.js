@@ -33,9 +33,9 @@ module.exports.isAuthor = async (req, res, next) => {
 }
 
 module.exports.isReviewAuthor = async (req, res, next) => {
-    const { id, reviewid } = req.params;
-    const review = await Review.findById(reviewid);
-    console.log(review.author);
+    const { id, reviewId } = req.params;
+    const review = await Review.findById(reviewId);
+    console.log(review);
     if (!review.author.equals(req.user._id)) {
         req.flash('error', 'You do not have permission to do that!');
         return res.redirect(`/shops/${id}`);

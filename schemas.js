@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { number } = require('joi');
 
 module.exports.shopSchema = Joi.object({
     shop: Joi.object({
