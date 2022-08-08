@@ -1,4 +1,6 @@
 const Shop = require('../models/shop');
+const { cloudinary } = require("../cloudinary");
+
 
 module.exports.index = async (req, res) => {
     const shops = await Shop.find({});
@@ -11,8 +13,10 @@ module.exports.renderNewForm = (req, res) => {
 
 module.exports.createShop = async (req, res, next) => {
     const shop = new Shop(req.body.shop);
+    shop.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     shop.author = req.user._id;
     await shop.save();
+    console.log(shop);
     req.flash('success', 'Successfully made a new shop!');
     res.redirect(`/shops/${shop._id}`)
 }
@@ -43,7 +47,17 @@ module.exports.renderEditForm = async (req, res) => {
 
 module.exports.updateShop = async (req, res) => {
     const { id } = req.params;
+    console.log(req.body);
     const shop = await Shop.findByIdAndUpdate(id, { ...req.body.shop });
+    const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }));
+    shop.images.push(...imgs);
+    await shop.save();
+    if (req.body.deleteImages) {
+        for (let filename of req.body.deleteImages) {
+            await cloudinary.uploader.destroy(filename);
+        }
+        await shop.updateOne({ $pull: { images: { filename: { $in: req.body.deleteImages } } } })
+    }
     req.flash('success', 'Successfully updated shop!');
     res.redirect(`/shops/${shop._id}`)
 }

@@ -25,9 +25,14 @@ const seedDB = async () => {
             author: '62db870f07c1ae5574c6fb40', //ObjectId('62db870f07c1ae5574c6fb40')
             location: `${cities[random1000].city}, ${cities[random1000].state}`,
             title: `${sample(descriptors)} ${sample(nouns)}`,
-            image: 'https://source.unsplash.com/collection/v6GwutAZ0EI',
             description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse rem nobis, recusandae voluptatem beatae cumque tempore illum accusantium odit velit ea ipsa asperiores, officiis adipisci corporis? Itaque sed facere voluptate?',
-            price
+            price,
+            images: [
+                {
+                    url: 'https://res.cloudinary.com/dxemsk6ez/image/upload/v1659561573/BobaFinds/pwdxnuxzug94a5nral3w.jpg',
+                    filename: 'BobaFinds/pwdxnuxzug94a5nral3w',
+                }
+            ]
         });
         await shop.save();
     }
