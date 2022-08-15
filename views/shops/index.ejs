@@ -1,34 +1,43 @@
 <% layout('layouts/boilerplate') %>
-    <h1>All boba shops</h1>
-    <div>
-        <a href="/shops/new">Add New Boba Shop</a>
-    </div>
+    <div id="map" style="width: 100%; height: 500px"></div>
+    <div class="container">
+        <h1>All boba shops</h1>
+        <div>
+            <a href="/shops/new">Add New Boba Shop</a>
+        </div>
 
-    <% for (let shop of shops) { %>
-        <div class="card mb-3">
-            <div class="row">
-                <div class="col-md-4">
-                    <%if(shop.images.length) {%>
-                        <img class="img-fluid" alt="" src="<%=shop.images[0].url %> ">
-                        <% }else {%>
-                            <img class="img-fluid" alt=""
-                                src="https://res.cloudinary.com/dxemsk6ez/image/upload/v1659561573/BobaFinds/pwdxnuxzug94a5nral3w.jpg">
-                            <% } %>
-                </div>
-                <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <%=shop.title %>
-                        </h5>
-                        <p class="card-text">
-                            <%=shop.description %>
-                        </p>
-                        <p class="card-text"><small class="text-secondary">
-                                <%=shop.location %>
-                            </small></p>
-                        <a href="/shops/<%=shop._id %>" class="btn btn-primary">Visit <%=shop.title%></a>
+        <% for (let shop of shops) { %>
+            <div class="card mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        <%if(shop.images.length) {%>
+                            <img class="img-fluid" alt="" src="<%=shop.images[0].url %> ">
+                            <% }else {%>
+                                <img class="img-fluid" alt=""
+                                    src="https://res.cloudinary.com/dxemsk6ez/image/upload/v1659561573/BobaFinds/pwdxnuxzug94a5nral3w.jpg">
+                                <% } %>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%=shop.title %>
+                            </h5>
+                            <p class="card-text">
+                                <%=shop.description %>
+                            </p>
+                            <p class="card-text"><small class="text-secondary">
+                                    <%=shop.location %>
+                                </small></p>
+                            <a href="/shops/<%=shop._id %>" class="btn btn-primary">Visit <%=shop.title%></a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <% } %>
+            <% }%>
+    </div>
+    <script>
+        const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+        const shops = { features: <%- JSON.stringify(shops) %> };
+    </script>
+
+    <script src="/javascripts/clusterMap.js"></script>

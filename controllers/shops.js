@@ -1,9 +1,15 @@
 const Shop = require('../models/shop');
 const { cloudinary } = require("../cloudinary");
+const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapBoxToken = process.env.MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 
 
 module.exports.index = async (req, res) => {
-    const shops = await Shop.find({});
+    const shops = await Shop.find({}).populate({
+        path: 'popupText',
+        strictPopulate: false
+    });
     res.render('shops/index', { shops })
 }
 
@@ -12,7 +18,12 @@ module.exports.renderNewForm = (req, res) => {
 }
 
 module.exports.createShop = async (req, res, next) => {
+    const geoData = await geocoder.forwardGeocode({
+        query: req.body.shop.location,
+        limit: 1
+    }).send()
     const shop = new Shop(req.body.shop);
+    shop.geometry = geoData.body.features[0].geometry;
     shop.images = req.files.map(f => ({ url: f.path, filename: f.filename }));
     shop.author = req.user._id;
     await shop.save();

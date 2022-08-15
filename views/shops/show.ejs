@@ -115,7 +115,7 @@
 
     <script>
         const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
-        const shop = JSON.parse('<%-JSON.stringify(shop)%>');
+        const shop = <%- JSON.stringify(shop) %>;
     </script>
 
     <script src="/javascripts/showPageMap.js"></script>
