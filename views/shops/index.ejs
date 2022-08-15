@@ -8,7 +8,12 @@
         <div class="card mb-3">
             <div class="row">
                 <div class="col-md-4">
-                    <img class="img-fluid" alt="" src="<%=shop.images[0].url %> ">
+                    <%if(shop.images.length) {%>
+                        <img class="img-fluid" alt="" src="<%=shop.images[0].url %> ">
+                        <% }else {%>
+                            <img class="img-fluid" alt=""
+                                src="https://res.cloudinary.com/dxemsk6ez/image/upload/v1659561573/BobaFinds/pwdxnuxzug94a5nral3w.jpg">
+                            <% } %>
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
