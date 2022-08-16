@@ -23,13 +23,19 @@ const userRoutes = require('./routes/users');
 const shopRoutes = require('./routes/shops');
 const reviewRoutes = require('./routes/reviews');
 
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/bobaShops';
+
+const MongoDBStore = require("connect-mongo")(session);
+
+const secret = process.env.SECRET || 'thisshouldbeabettersecret!';
+
 connect().catch(err => {
     console.log("MONGO CONNECTION FAILED");
     console.log(err);
 });
 
 async function connect() {
-    await mongoose.connect('mongodb://localhost:27017/bobaShops');
+    await mongoose.connect(dbUrl);
     console.log("MONGO CONNECTION SUCCESS");
 }
 
@@ -41,8 +47,19 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride('_method'));
 app.use(express.static(path.join(__dirname, 'public')));
 
+const store = new MongoDBStore({
+    url: dbUrl,
+    secret,
+    touchAfter: 24 * 60 * 60
+});
+
+store.on("error", function(e) {
+    console.log("Session Store Error", e)
+})
+
 const sessionConfig = {
-    secret: 'thisshouldbeabettersecret!',
+    store,
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
